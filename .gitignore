@@ -1,0 +1,13 @@
+# Ignore specific directories
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Ignore everything in common/buster-extension/
+common/buster-extension/*
+
+# Unignore dist directory and its contents
+!common/buster-extension/dist/
+!common/buster-extension/dist/**
