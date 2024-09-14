@@ -64,39 +64,7 @@ test('open slots', async ({ page }) => {
   });
   await page.waitForTimeout(2000);
 
-  await page.screenshot({ path: 'captcha.png' });
-
-  const formData = new FormData();
-  formData.append('key', '17501880666437eb5779f9763aa7e055');
-  formData.append('method', 'base64');
-  formData.append('body', fs.readFileSync('captcha.png').toString('base64'));
-
-  const response = await fetch('https://2captcha.com/in.php', {
-    method: 'POST',
-    body: formData,
-  });
-  const responseText = (await response.text()).substring(3);
-  await page.waitForTimeout(5000);
-
-  let solution: any = null;
-  let counter = 0;
-
-  while (!solution && counter < 5) {
-    const checkResponse = await fetch(
-      `https://2captcha.com/res.php?key=17501880666437eb5779f9763aa7e055&action=get&id=${responseText}`
-    );
-    const resultText = await checkResponse.text();
-
-    counter++;
-    if (resultText === 'CAPCHA_NOT_READY') {
-      await new Promise((res) => setTimeout(() => res(true), 3000));
-    } else {
-      solution = resultText;
-    }
-  }
-
-  await page.fill('input[name=captcha]', solution);
-  await page.click('button[type=submit]', solution);
+  
 
   await page.getByText('Login').click();
   await page.pause();
